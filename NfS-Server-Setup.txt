@@ -1,0 +1,15 @@
+sudo apt update
+sudo apt install nfs-kernel-server
+sudo mkdir -p /srv/nfs_share
+sudo chown nobody:nogroup /srv/nfs_share
+sudo chmod 777 /srv/nfs_share
+sudo nano /etc/exports
+/srv/nfs_share 192.168.1.0/24(rw,sync,no_subtree_check)
+sudo exportfs -a
+sudo systemctl restart nfs-kernel-server
+sudo ufw allow from 192.168.1.0/24 to any port nfs
+ip a
+
+Client Side:
+sudo apt install nfs-common
+sudo mount <VM-IP>:/srv/nfs_share /mnt
